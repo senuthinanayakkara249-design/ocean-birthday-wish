@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<!--
+  ===========================================================
+  OCEAN BIRTHDAY SURPRISE  -  index.html  (the STRUCTURE)
+  ===========================================================
+  This file holds the six "pages" (really six <section> blocks).
+  JavaScript shows one at a time. You normally DON'T need to edit this
+  file - all the words, password, photos and quiz live in script.js
+  inside the section called "CONFIG".
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A Little Secret For my Ocean 🌊</title>
+  <meta name="theme-color" content="#0a2a5e">
+
+  <!-- Pretty fonts from Google Fonts (the site still works without internet, just with simpler fonts) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Great+Vibes&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body data-page="1">
+  <noscript>This birthday surprise needs JavaScript turned on 💙</noscript>
+
+  <!-- ============ BACKGROUND DECORATION (filled in by script.js) ============ -->
+  <div id="ambient" aria-hidden="true">
+    <div class="moon"></div>
+    <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
+  </div>
+  <div id="waves" aria-hidden="true">
+    <svg class="wave w1" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0 60 Q150 0 300 60 T600 60 T900 60 T1200 60 V120 H0Z"/></svg>
+    <svg class="wave w2" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0 70 Q150 20 300 70 T600 70 T900 70 T1200 70 V120 H0Z"/></svg>
+  </div>
+  <div id="fx" aria-hidden="true"></div>      <!-- hearts, sparkles and confetti appear here -->
+  <div id="flash" aria-hidden="true"></div>   <!-- red flash for wrong password -->
+  <div id="wipe" aria-hidden="true"></div>    <!-- wave wipe between pages -->
+
+  <!-- ============ TOP BAR: progress through the six stages ============ -->
+  <header id="topbar">
+    <nav id="progress" aria-label="Your progress through the surprise">
+      <button class="dot" data-n="1" aria-label="Stage 1: Secret gate"></button>
+      <button class="dot" data-n="2" aria-label="Stage 2: Warning"></button>
+      <button class="dot" data-n="3" aria-label="Stage 3: Love letter"></button>
+      <button class="dot" data-n="4" aria-label="Stage 4: Quiz"></button>
+      <button class="dot" data-n="5" aria-label="Stage 5: Puzzle and album"></button>
+      <button class="dot" data-n="6" aria-label="Stage 6: Birthday surprise"></button>
+    </nav>
+    <span id="stageLabel">Stage 1 of 6</span>
+  </header>
+
+  <!-- ============ MUSIC PLAYER (stays on screen on every page) ============ -->
+  <div id="player" class="glass" role="region" aria-label="Music player">
+    <button id="playBtn" class="p-btn" aria-label="Play music">▶</button>
+    <div class="p-info">
+      <span id="songTitle" class="p-title">Our Song</span>
+      <span id="playerNote" class="p-note" role="status" aria-live="polite">Tap play for music 🎶</span>
+    </div>
+    <button id="muteBtn" class="p-btn small" aria-label="Mute music" aria-pressed="false">🔊</button>
+    <input id="volume" type="range" min="0" max="1" step="0.05" value="0.5" aria-label="Music volume">
+  </div>
+
+  <main>
+    <!-- =====================================================
+         PAGE 1 - THE SECRET PASSWORD GATE
+         ===================================================== -->
+    <section class="page active" id="page1" aria-labelledby="t1">
+      <div class="sticker float s-top" aria-hidden="true">🐬</div>
+      <div class="card glass gate" id="gateCard">
+        <p class="eyebrow">✦ top secret ✦</p>
+        <h1 id="t1">A Little Secret Awaits You...</h1>
+        <p class="sub">Only <span class="nick">Ocean</span> can unlock this little world.</p>
+        <p class="hint"><span aria-hidden="true">🗝️</span> Hint: <span id="hintText"></span></p>
+
+        <div id="pearls" class="pearls" role="img" aria-label="Password progress"></div>
+
+        <div id="keypad" class="keypad" role="group" aria-label="Number keypad">
+          <button type="button" class="key" data-key="1">1</button>
+          <button type="button" class="key" data-key="2">2</button>
+          <button type="button" class="key" data-key="3">3</button>
+          <button type="button" class="key" data-key="4">4</button>
+          <button type="button" class="key" data-key="5">5</button>
+          <button type="button" class="key" data-key="6">6</button>
+          <button type="button" class="key" data-key="7">7</button>
+          <button type="button" class="key" data-key="8">8</button>
+          <button type="button" class="key" data-key="9">9</button>
+          <button type="button" class="key key-fn" data-key="del" aria-label="Delete last digit">⌫</button>
+          <button type="button" class="key" data-key="0">0</button>
+          <button type="button" class="key key-fn" data-key="clear" aria-label="Clear all digits">C</button>
+        </div>
+
+        <button id="unlockBtn" type="button" class="btn btn-primary btn-lg">Unlock 💙</button>
+        <p id="gateMsg" class="gate-msg" role="status" aria-live="polite"></p>
+        <button id="sfxToggle" type="button" class="chip" aria-pressed="true">🔔 Sounds: on</button>
+      </div>
+
+      <!-- Angry bear pops up here when the password is wrong. -->
+      <div id="bearPop" class="bear-pop" hidden>
+        <div class="bear-art">
+          <!-- If assets/angry-bear.gif exists it replaces the drawing below. -->
+          <img id="bearImg" alt="" hidden>
+          <svg id="bearSvg" viewBox="0 0 200 200" aria-hidden="true">
+            <circle cx="52" cy="52" r="25" fill="#ff9fc4"/><circle cx="52" cy="52" r="12" fill="#ffd9e8"/>
+            <circle cx="148" cy="52" r="25" fill="#ff9fc4"/><circle cx="148" cy="52" r="12" fill="#ffd9e8"/>
+            <ellipse cx="100" cy="112" rx="78" ry="70" fill="#ffb6d2" stroke="#f27aa6" stroke-width="4"/>
+            <ellipse cx="100" cy="134" rx="31" ry="22" fill="#ffe6f0"/>
+            <ellipse cx="100" cy="123" rx="9" ry="6" fill="#8a2f55"/>
+            <ellipse cx="56" cy="126" rx="13" ry="7" fill="#ff6f9f" opacity=".55"/>
+            <ellipse cx="144" cy="126" rx="13" ry="7" fill="#ff6f9f" opacity=".55"/>
+            <circle cx="70" cy="102" r="7.5" fill="#3b1a2b"/><circle cx="130" cy="102" r="7.5" fill="#3b1a2b"/>
+            <circle cx="72.5" cy="99.5" r="2.4" fill="#fff"/><circle cx="132.5" cy="99.5" r="2.4" fill="#fff"/>
+            <path d="M50 80 L88 96" stroke="#8a2f55" stroke-width="8" stroke-linecap="round"/>
+            <path d="M150 80 L112 96" stroke="#8a2f55" stroke-width="8" stroke-linecap="round"/>
+            <path d="M80 150 Q100 134 120 150" stroke="#8a2f55" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+            <text x="150" y="68" font-size="30">💢</text>
+          </svg>
+        </div>
+        <p id="bearText" class="bear-text"></p>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         PAGE 2 - THE CUTE WARNING
+         ===================================================== -->
+    <section class="page" id="page2" aria-labelledby="t2">
+      <div class="sticker float s-top" aria-hidden="true">😼</div>
+      <div class="card glass warn">
+        <div class="heart-lock" aria-hidden="true"><span class="hl-heart">💙</span><span class="hl-lock">🔓</span></div>
+        <h1 id="t2">CONGRATULATIONS! YOU PASSED THE SECRET TEST! 🐬💙</h1>
+        <h2 class="warn-title"><span aria-hidden="true">⚠️</span> WARNING: PROCEED WITH CAUTION! <span aria-hidden="true">⚠️</span></h2>
+        <p>You might fall in love and melt apart. Your heart might get hacked, your cheeks might start hurting from smiling, and you may never recover from this level of cuteness.</p>
+        <p class="big-q">Are you sure you want to continue?</p>
+        <div class="btn-row">
+          <button id="riskBtn" type="button" class="btn btn-primary btn-lg">I'm ready to take the risk 💙</button>
+          <button id="giveUpBtn" type="button" class="btn btn-ghost btn-lg">Okay, I'm gonna give up 😭</button>
+        </div>
+      </div>
+
+      <!-- Popup: ready to take the risk -->
+      <div class="modal" id="luckModal" role="dialog" aria-modal="true" aria-labelledby="luckTitle" hidden>
+        <div class="modal-card glass">
+          <div class="sticker-lg" aria-hidden="true">😼</div>
+          <h2 id="luckTitle">Good luck then 😼</h2>
+          <button id="letsGoBtn" type="button" class="btn btn-primary btn-lg">Let's go!</button>
+        </div>
+      </div>
+
+      <!-- Popup: gave up -->
+      <div class="modal" id="byeModal" role="dialog" aria-modal="true" aria-labelledby="byeTitle" hidden>
+        <div class="modal-card glass">
+          <div class="sticker-lg run" aria-hidden="true">🏃💨😭</div>
+          <h2 id="byeTitle">Wow bye looser! 😭💀</h2>
+          <p class="modal-sub">(...okay wait, come back, I was only joking 🥺)</p>
+          <button id="reconsiderBtn" type="button" class="btn btn-primary btn-lg">Fine, I'll continue 💙</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         PAGE 3 - THE SECRET LOVE LETTER
+         ===================================================== -->
+    <section class="page" id="page3" aria-labelledby="t3">
+      <!-- Step A: the closed envelope -->
+      <div id="envelopeStage" class="card glass envelope-stage">
+        <h1 id="t3">Dear <span class="nick">Ocean</span>... 💌</h1>
+        <p class="sub">There is a little something my heart has been wanting to tell you.</p>
+        <p class="sub">Are you ready to open it?</p>
+        <button id="envelopeBtn" type="button" class="env-wrap">
+          <span class="envelope" aria-hidden="true">
+            <span class="env-back"></span>
+            <span class="env-paper">💙</span>
+            <span class="env-front"></span>
+            <span class="env-flap"></span>
+            <span class="env-seal">💙</span>
+          </span>
+          <span class="env-cta">Open your little love letter 💙</span>
+        </button>
+      </div>
+
+      <!-- Step B: the opened letter -->
+      <div id="letterStage" class="letter-stage" hidden>
+        <article class="paper" id="paper" tabindex="0" aria-label="Your love letter (scrollable)">
+          <h2 class="script" id="letterGreeting"></h2>
+          <div id="letterBody"></div>
+          <p class="ps" id="letterPS"></p>
+          <p class="script sign" id="letterSign"></p>
+        </article>
+        <button id="toQuiz" type="button" class="btn btn-primary btn-lg">Next little adventure →</button>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         PAGE 4 - THE QUIZ
+         ===================================================== -->
+    <section class="page" id="page4" aria-labelledby="t4">
+      <button type="button" class="btn btn-back" data-back>← Back</button>
+      <div class="card glass quiz">
+        <h1 id="t4">How Well Do You Know Your Wife? 😼💙</h1>
+        <p class="sub">Let's see if you're really the expert you claim to be!</p>
+
+        <div id="quizArea">
+          <div class="q-meta"><span id="qCounter">Question 1 of 8</span><span id="qSticker" aria-hidden="true">🐠</span></div>
+          <div class="bar" aria-hidden="true"><i id="qBar"></i></div>
+          <h2 id="qText" class="q-text" tabindex="-1"></h2>
+          <div id="qOptions" class="options" role="group" aria-labelledby="qText"></div>
+          <p id="qHint" class="q-hint" role="status" aria-live="polite"></p>
+          <div class="btn-row">
+            <button id="qPrev" type="button" class="btn btn-ghost">← Previous</button>
+            <button id="qNext" type="button" class="btn btn-primary">Next →</button>
+          </div>
+        </div>
+
+        <div id="quizResult" class="quiz-result" hidden>
+          <div id="resultSticker" class="sticker-lg" aria-hidden="true">🏆</div>
+          <p class="score-label">Your final score</p>
+          <p id="scoreBig" class="score-big">0 / 8</p>
+          <h2 id="resultTitle"></h2>
+          <p id="resultText"></p>
+          <div class="btn-row">
+            <button id="retryBtn" type="button" class="btn btn-ghost">Try again 🔁</button>
+            <button id="quizContinue" type="button" class="btn btn-primary">Continue →</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         PAGE 5 - PHOTO PUZZLE + SECRET ALBUM
+         ===================================================== -->
+    <section class="page" id="page5" aria-labelledby="t5">
+      <button type="button" class="btn btn-back" data-back>← Back</button>
+      <div class="card glass puzzle-card">
+        <h1 id="t5">One Last Little Mystery, <span class="nick">Ocean</span>... 🐚</h1>
+        <p class="sub">Put the pieces together to unlock something special.</p>
+        <p id="puzzleStatus" class="puzzle-status" role="status" aria-live="polite">Slide the pieces next to the gap. Moves: 0</p>
+        <div class="board-wrap">
+          <div id="board" class="board" role="group" aria-label="Sliding picture puzzle. Tap a piece next to the empty gap to slide it."></div>
+          <div id="peek" class="peek" hidden aria-hidden="true"></div>
+        </div>
+        <div class="btn-row">
+          <button id="shuffleBtn" type="button" class="btn btn-primary">🔀 Shuffle</button>
+          <button id="resetBtn" type="button" class="btn btn-ghost">↺ Reset</button>
+          <button id="peekBtn" type="button" class="btn btn-ghost">👀 Peek</button>
+        </div>
+      </div>
+
+      <!-- Hidden until the puzzle is solved -->
+      <div id="album" class="album-wrap" hidden>
+        <h2 class="album-title">🐚 Our Secret Album 🐚</h2>
+        <div id="albumGrid" class="album-grid"></div>
+        <button id="toFinale" type="button" class="btn btn-primary btn-lg">One final surprise awaits you →</button>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         PAGE 6 - THE ROYAL BIRTHDAY SURPRISE
+         ===================================================== -->
+    <section class="page" id="page6" aria-labelledby="t6">
+      <button type="button" class="btn btn-back" data-back>← Back</button>
+      <div class="balloons" aria-hidden="true">
+        <i class="balloon b1"></i><i class="balloon b2"></i><i class="balloon b3"></i><i class="balloon b4"></i><i class="balloon b5"></i>
+      </div>
+      <div class="royal-wrap">
+        <span class="deco rose r1" aria-hidden="true">🌹</span>
+        <span class="deco rose r2" aria-hidden="true">🌹</span>
+        <span class="deco shell s1" aria-hidden="true">🐚</span>
+        <span class="deco dolphin d1" aria-hidden="true">🐬</span>
+        <span class="deco pearl-d p1" aria-hidden="true">🦪</span>
+
+        <article class="royal">
+          <p class="crown" aria-hidden="true">♛</p>
+          <h1 id="t6" class="royal-title">Happy Birthday, <span class="nick">Ocean</span>!</h1>
+
+          <!-- Cute cake drawing (pure SVG) -->
+          <svg class="cake" viewBox="0 0 160 150" aria-hidden="true">
+            <ellipse cx="80" cy="138" rx="66" ry="9" fill="#0d3b66" opacity=".18"/>
+            <rect x="22" y="84" width="116" height="48" rx="12" fill="#bfe3ff"/>
+            <path d="M22 100 q10 14 20 0 t20 0 t20 0 t20 0 t20 0 t16 0 V92 a8 8 0 0 0 -8 -8 H30 a8 8 0 0 0 -8 8Z" fill="#fff"/>
+            <rect x="38" y="52" width="84" height="38" rx="10" fill="#8ecbff"/>
+            <path d="M38 66 q8 12 16 0 t16 0 t16 0 t16 0 t20 0 V60 a8 8 0 0 0 -8 -8 H46 a8 8 0 0 0 -8 8Z" fill="#fdfcff"/>
+            <circle cx="58" cy="112" r="4" fill="#fdfcff"/><circle cx="80" cy="116" r="4" fill="#fdfcff"/><circle cx="102" cy="112" r="4" fill="#fdfcff"/>
+            <rect x="76" y="30" width="8" height="24" rx="3" fill="#5ee7e0"/>
+            <path class="flame" d="M80 10 q9 10 0 19 q-9 -9 0 -19Z" fill="#ffd36e"/>
+          </svg>
+
+          <h2 class="royal-sub">To My Favorite <span class="nick">Ocean</span>, Happy Birthday! 🌊💙</h2>
+          <div id="birthdayBody" class="royal-body"></div>
+          <p class="giggle" id="giggleLine"></p>
+          <p class="signoff" id="signoff"></p>
+
+          <div class="btn-row">
+            <button id="revealBtn" type="button" class="btn btn-primary btn-lg">Reveal my final secret 🔮</button>
+          </div>
+          <div id="finalSecret" class="final-secret" hidden>
+            <p id="finalText"></p>
+            <button id="replayBtn" type="button" class="btn btn-ghost">Celebrate again 🎉</button>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <audio id="bgm" loop preload="none"></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
